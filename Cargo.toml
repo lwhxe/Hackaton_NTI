@@ -1,6 +1,0 @@
-[package]
-name = "Hackaton_NTI"
-version = "0.1.0"
-edition = "2024"
-
-[dependencies]
