@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Pixel Replacer</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        .container { margin-top: 20px; }
+        img { max-width: 100%; border: 1px solid #ccc; margin-top: 10px; }
+        button { padding: 10px 20px; cursor: pointer; font-size: 16px; }
+    </style>
+</head>
+<body>
+    <h2>Image Coordinate Replacer</h2>
+    
+    <button onclick="spawnModifiedImage()">Spawn Modified Image</button>
+
+    <div class="container">
+        <h3>Result:</h3>
+        <div id="result-container"></div>
+    </div>
+
+    <script>
+        function spawnModifiedImage() {
+            const imageUrl = 'https://raw.githubusercontent.com/lwhxe/Hackaton_NTI/refs/heads/main/sidan/wewo.png?token=GHSAT0AAAAAADK5PXEYTO2X5XB22HMB5W3A2JYI47Q'; 
+            const x = 100;
+            const y = 50;
+            const color = 'red';
+
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            const img = new Image();
+
+            img.crossOrigin = "Anonymous";
+
+            img.onload = () => {
+                canvas.width = img.width;
+                canvas.height = img.height;
+
+                ctx.drawImage(img, 0, 0);
+
+                ctx.fillStyle = color;
+                ctx.fillRect(x, y, 10, 10); 
+
+                try {
+                    const newDataUrl = canvas.toDataURL('image/jpeg');
+
+                    const resultImg = new Image();
+                    resultImg.src = newDataUrl;
+                    
+                    const container = document.getElementById('result-container');
+                    container.innerHTML = ''; 
+                    container.appendChild(resultImg);
+                    
+                    console.log("New image spawned successfully!");
+                } catch (error) {
+                    console.error("Security Error: The image source does not allow CORS manipulation.", error);
+                    alert("Error: The image source blocked the export. Use a local server or a CORS-friendly image host.");
+                }
+            };
+
+            img.onerror = () => {
+                console.error("Could not load image from URL");
+            };
+
+            img.src = imageUrl;
+        }
+    </script>
+</body>
+</html>
